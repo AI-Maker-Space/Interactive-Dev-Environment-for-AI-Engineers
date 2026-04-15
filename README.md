@@ -97,7 +97,7 @@ Some commands we will use in this lesson when it comes to `uv` and `pip`:
 
 `source .venv/bin/activate` -> This activates the virtual environment for your current terminal session.
 
-`uv pip install numpy pandas matplotlib jupyter openai huggingface_hub` -> This installs the six packages mentioned - `numpy`, `pandas`, `jupyter`, `matplotlib`, `openai`, and `huggingface_hub`. `numpy` is used for scientific computing, `pandas` is used for data analysis, `matplotlib` is used for data graphics. `jupyter` is discussed later in this tutorial in depth! `openai` is used to access OpenAI's GPT models through an API key. `huggingface_hub` is used to push our code and models to Huggingface and host it in a Huggingface Space.
+`uv pip install numpy pandas matplotlib jupyter openai` -> This installs the five packages mentioned - `numpy`, `pandas`, `jupyter`, `matplotlib`, and `openai`. `numpy` is used for scientific computing, `pandas` is used for data analysis, `matplotlib` is used for data graphics. `jupyter` is discussed later in this tutorial in depth! `openai` is used to access OpenAI's GPT models through an API key.
 
 </details>
 
@@ -226,19 +226,6 @@ Now let's install uv and other tools:
 ## 🧑‍💻 Let's configure our Cursor (or VS Code) environment!
 
 <details>
-  <summary>Install the IntelliCode Extension</summary>
-
-  IntelliCode is an AI-powered code completion extension to boost coding productivity. :sunglasses:
-
-  1. Click the `Extensions` <img src="https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/f17d8f45-f174-4b9b-be92-8f1e85d8a77b" width=30px/> tab in the navigation panel on the left side of Cursor (or VS Code). 
-
-  2. Type "IntelliCode" in the search bar.
-
-  3. Click `install` <img src="https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/4c06f2a7-d7c3-4c59-b656-82170518cbeb" width=30px/> on the <ins><strong>Microsoft IntelliCode Extension</strong></ins>
-
-</details>
-
-<details>
   <summary>Install the Python and Jupyter Notebook Extensions</summary>
 
   1. Click the `Extensions` <img src="https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/f17d8f45-f174-4b9b-be92-8f1e85d8a77b" width=30px/> tab on the left side of the window.
@@ -283,134 +270,6 @@ Now let's install uv and other tools:
 </details>
 
 <p> </p>
-
-
-## 🐳 Setting up Docker Desktop and Compose
-
-<details>
-  <summary>Windows</summary>
-
-
-
-**👉 [💿 Download Docker](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe)** 👈
-
-1. Double-click **Docker Desktop Installer.exe** to run the installer.
-
-2. When prompted, ensure the **Use WSL 2 instead of Hyper-V** option on the Configuration page is selected or not depending on your choice of backend.
-
-   If your system only supports one of the two options, you will not be able to select which backend to use.
-
-3. Follow the instructions on the installation wizard to authorize the installer and proceed with the install.
-
-4. When the installation is successful, select **Close** to complete the installation process.
-
-5. If your admin account is different to your user account, you must add the user to the **docker-users** group. Run **Computer Management** as an **administrator** and navigate to **Local Users and Groups** > **Groups** > **docker-users**. Right-click to add the user to the group.
-   Sign out and sign back in for the changes to take effect.
-   
-</details>
-
-
-
-<details>
-  <summary>Ubuntu</summary>
-
-To install Docker Desktop successfully, you must:
-
-- Meet the [system requirements](https://docs.docker.com/engine/install/ubuntu/#prerequisites)
-- Have a 64-bit version of either Ubuntu Jammy Jellyfish 22.04 (LTS) or Ubuntu Impish Indri 21.10.
-  Docker Desktop is supported on `x86_64` (or `amd64`) architecture.
-- For non-Gnome Desktop environments, `gnome-terminal` must be installed:
-  ```console
-  $ sudo apt install gnome-terminal
-  ```
-
-1.  Update the `apt` package index and install packages to allow `apt` to use a
-    repository over HTTPS:
-
-    ```console
-    $ sudo apt-get update
-    $ sudo apt-get install ca-certificates curl gnupg
-    ```
-
-2.  Add Docker's official GPG key:
-
-    ```console
-    $ sudo install -m 0755 -d /etc/apt/keyrings
-    $ curl -fsSL {{% param "download-url-base" %}}/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-    $ sudo chmod a+r /etc/apt/keyrings/docker.gpg
-    ```
-
-3.  Use the following command to set up the repository:
-
-    ```console
-    $ echo \
-      "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] {{% param "download-url-base" %}} \
-      "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    ```
-
-4. Update the `apt` package index:
-
-   ```console
-   $ sudo apt-get update
-   ```
-
-
-5. Download Docker Desktop
-   
-     ``` bash
-     wget https://desktop.docker.com/linux/main/amd64/docker-desktop-4.22.1-amd64.deb
-     ```
-
-6. Install the package with apt as follows:
-     ```bash
-     $ sudo apt-get update
-     $ sudo apt-get install ./docker-desktop-4.22.1-amd64.deb
-     ```
-     
-7. Launch Docker Desktop
-     ```bash
-          systemctl --user start docker-desktop
-     ```
-     
-   > **Note**
-   >
-   > At the end of the installation process, `apt` displays an error due to installing a downloaded package. You
-   > can ignore this error message.
-   >
-   > ```
-   > N: Download is performed unsandboxed as root, as file '/home/user/Downloads/docker-desktop.deb' couldn't be accessed by user '_apt'. - pkgAcquire::Run (13: Permission denied)
-</details>
-
-
-
-<details>
-  <summary>macOS (Intel and Apple Silicon)</summary>
-
-**👉 [💿 Download Docker](https://desktop.docker.com/mac/main/arm64/Docker.dmg)** 👈
-
-1. Double-click `Docker.dmg` to open the installer, then drag the Docker icon to
-    the **Applications** folder.
-
-
-2. Double-click `Docker.app` in the **Applications** folder to start Docker.
-
-3. The Docker menu ({{< inline-image src="images/whale-x.svg" alt="whale menu" >}}) displays the Docker Subscription Service Agreement.
-
-    {{< include "desktop-license-update.md" >}}
-
-4. Select **Accept** to continue. 
-
-   Note that Docker Desktop won't run if you do not agree to the terms. You can choose to accept the terms at a later date by opening Docker Desktop.
-
-   For more information, see [Docker Desktop Subscription Service Agreement](https://www.docker.com/legal/docker-subscription-service-agreement). We recommend that you also read the [FAQs](https://www.docker.com/pricing/faq).
-5. From the installation window, select either: 
-   - **Use recommended settings (Requires password)**. This let's Docker Desktop automatically set the necessary configuration settings. 
-   - **Use advanced settings**. You can then set the location of the Docker CLI tools either in the system or user directory, enable the default Docker socket, and enable privileged port mapping. See [Settings](../settings/mac.md#advanced), for more information and how to set the location of the Docker CLI tools.
-6. Select **Finish**. If you have applied any of the above configurations that require a password in step 5, enter your password to confirm your choice.
-</details>
-
-
 
 
 ## 🔑 Setting Up Keys and Tokens
@@ -477,33 +336,6 @@ We recommend your run through our [OpenAI Notebook](https://colab.research.googl
   ![Claude API Key Test Results](/images/claude_api_key_test_results.png)
 
 </details>
-
-<details>
-  <summary>Generating a Huggingface Access Token</summary>
-     
-**Create an account with Huggingface [here](https://huggingface.co/join) if you do not have one.**
-
-Navigate to [Token settings](https://huggingface.co/settings/tokens) and click on `New token`.
-![Screenshot 2023-08-29 at 6 16 12 PM](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/8ec271de-4cb2-44b0-b6f8-ea354e2c42c2)
-
-Name your access token, change the role to write, and click `Generate a token`
-![Screenshot 2023-08-29 at 6 16 58 PM](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/b9ae1590-1541-497d-a54a-1188438844b8)
-
-Copy the token and save it for later use. We will use this token several times in deploying projects. If you lose this token, you can always go back to your token's page and view the token.
-
-![Screenshot 2023-08-29 at 6 17 29 PM](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/5fa285fa-d2ef-4308-b713-fb7384a53516)
-
-Login to Huggingface using your terminal
-``` bash
-huggingface-cli login
-```
-![Screenshot 2023-08-29 at 6 13 23 PM](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/31727145-8451-48bd-a560-9d92a8d4af3a)
-
-After logging in, press `y` to add the token to credentials for git.
-![Screenshot 2023-08-29 at 6 18 13 PM](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/5215d7eb-7a40-4e50-acf1-a5b7c5186a54)
-
-</details>
-
 
 ## <img src="https://octodex.github.com/images/original.png" width=40px/> Let's Make Sure That GitHub is Ready to Roll!
 
