@@ -10,7 +10,7 @@
   <img src="images/ai_engineer_at_workstation.jpg" alt="AI Engineer Setting Up Dev Env" width="300" />
 </p>
 
-### <h3 align="center"> Getting Started 🏗️ Building, 🚢 Shipping, and 🚀 Sharing Production LLM Application!!
+### <h3 align="center"> Getting Started 🏗️ Building, 🚢 Shipping, and 🚀 Sharing Production LLM Applications!!
 
 🛣️ Welcome to the beginning of your journey to become an AI Engineer! 
 
@@ -24,14 +24,7 @@ This tutorial is designed to guide you through the process of setting up your In
 Note: [Anysphere's Cursor](https://www.cursor.com/) is a just a fork of VS Code (like [Codeium's Windsurf](https://windsurf.com/) and other competitors). 
 
 
-### 🏗️ The Simplest Stack
-* Version Control: [Git](https://git-scm.com/)
-* Command Line Interface (CLI): Shell for Unix-like OS
-* Package/Env Management: [uv](https://github.com/astral-sh/uv)
-* Python Notebooks: [Jupyter](https://jupyter.org/)
-* Code Editor: [Cursor](https://github.com/getcursor/cursor) (or VS Code) (Note: Cursor is just a fork of VS Code)
-
-### 🖥️ Operating Systems Supported (start [here](https://github.com/AI-Maker-Space/Interactive-Dev-Environment-for-LLM-Development?tab=readme-ov-file#rocket-lets-get-started))
+### 🖥️ Operating Systems Supported
 * Windows
 * Linux (Debian/Ubuntu)
 * macOS Intel
@@ -87,17 +80,25 @@ Git is a free and open source distributed version control system designed to han
 </details>
 
 <details>
-<summary>uv & Pip</summary>
+<summary>uv</summary>
 
 uv is an extremely fast Python package manager and virtual environment management tool, written in Rust. uv aims to be a drop-in replacement for pip and pip-tools, providing significantly improved performance. We will use `uv` to manage both our package installations and virtual environments.
 
-Some commands we will use in this lesson when it comes to `uv` and `pip`:
+Some common `uv` commands:
 
-`uv venv .venv -p 3.11` -> This creates a virtual environment with Python 3.11. A virtual environment is a Python environment such that the Python interpreter, libraries, and scripts installed into it are isolated from those installed on other environments and any libraries installed on the system. So basically, this allows you to keep all your project's code/dependencies/libraries separated from other projects.
+`uv init` -> Initializes a new Python project and generates a `pyproject.toml`.
 
-`source .venv/bin/activate` -> This activates the virtual environment for your current terminal session.
+`uv add <package-name>` -> Adds a package dependency to `pyproject.toml`.
 
-`uv pip install numpy pandas matplotlib jupyter openai` -> This installs the five packages mentioned - `numpy`, `pandas`, `jupyter`, `matplotlib`, and `openai`. `numpy` is used for scientific computing, `pandas` is used for data analysis, `matplotlib` is used for data graphics. `jupyter` is discussed later in this tutorial in depth! `openai` is used to access OpenAI's GPT models through an API key.
+`uv run python your_script.py` -> Runs a Python script inside the project environment without requiring manual activation.
+
+Note: In most AIM repositories, the required dependencies are already defined in `pyproject.toml`, so you typically will not need to run `uv init` or `uv add` unless you are modifying or extending the project.
+
+Optional: 
+
+`uv venv .venv -p 3.11` -> Creates a virtual environment in `.venv` using Python 3.11.
+
+`source .venv/bin/activate` -> Activates the virtual environment for your current shell session. This is optional if you use `uv run`.
 
 </details>
 
@@ -725,4 +726,4 @@ Then click `Create Repository`.
 
 ## Build Your First LLM Application
 
-Now that you've completed your IDE set-up, head on over to the [Beyond-ChatGPT](https://github.com/AI-Maker-Space/Beyond-ChatGPT) repository to build your first LLM application!
+Now that you've completed your IDE set-up, head on over to the [The-AI-Engineer-Challenge](https://github.com/AI-Maker-Space/The-AI-Engineer-Challenge) repository to build your first LLM application!
