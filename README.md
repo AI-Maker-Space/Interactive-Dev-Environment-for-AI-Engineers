@@ -132,7 +132,7 @@ Continue by installing the following tools using [Windows Terminal](https://www.
 
 | Tool | Purpose | Command                                                                                           |
 | :-------- | :-------- | :------------------------------------------------------------------------------------------------ |
-| :snake: **uv** (installed in WSL2) | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh | sh` <br> `source ~/.bashrc` |
+| :snake: **uv** (installed in WSL2) | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh \| sh` <br> `source ~/.bashrc` |
 | :octocat: **Git** (installed in WSL2) | Version Control | `sudo apt update && sudo apt upgrade` <br> `sudo apt install git-all`   |
 | :memo: **VS Code** (installed in Windows) | Development Environment | [Download](https://code.visualstudio.com/download) |
 | :memo: **Cursor** | Development Environment | [Download](https://www.cursor.com/downloads) |
@@ -145,7 +145,7 @@ Continue by installing the following tools using [Windows Terminal](https://www.
 Open terminal using <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>. Enter the following commands in terminal to setup your environment.
 | Tool | Purpose | Command                                                                                           |
 | :-------- | :-------- | :------------------------------------------------------------------------------------------------ |
-| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh | sh` <br> `source ~/.bashrc` |
+| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh \| sh` <br> `source ~/.bashrc` |
 | :octocat: **Git**  | Version Control | `sudo apt update && sudo apt upgrade` <br> `sudo apt install git-all`   |
 | :memo: **VS Code** | Development Environment | [Download](https://code.visualstudio.com/download) |
 | :memo: **Cursor** | Development Environment | [Download](https://www.cursor.com/downloads) |
@@ -176,7 +176,7 @@ Enter the following commands in terminal to setup your environment.
 
 | Tool | Purpose | Command                                                                                           |
 | :-------- | :-------- | :------------------------------------------------------------------------------------------------ |
-| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh | sh` <br> `source ~/.bashrc` |
+| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh \| sh` <br> `source ~/.bashrc` |
 | :octocat: **Git**  | Version Control | `brew install git`   |
 | :memo: **VS Code** | Development Environment | [Download](https://code.visualstudio.com/download) |
 | :memo: **Cursor** | Development Environment | [Download](https://www.cursor.com/downloads) |
@@ -213,7 +213,7 @@ Now let's install uv and other tools:
 
 | Tool | Purpose | Command                                                                                           |
 | :-------- | :-------- | :------------------------------------------------------------------------------------------------ |
-| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh | sh` |
+| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
 | :octocat: **Git**  | Version Control | `brew install git`   |
 | :memo: **VS Code** | Development Environment | [Download](https://code.visualstudio.com/download) |
 | :memo: **Cursor** | Development Environment | [Download](https://www.cursor.com/downloads) |
