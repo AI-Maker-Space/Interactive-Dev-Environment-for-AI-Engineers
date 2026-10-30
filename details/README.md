@@ -127,15 +127,23 @@ If a command says *not found* right after you installed it, open a new terminal.
 
 Make sure VS Code's terminal shows a line beginning with `PS` (PowerShell). If it shows `bash` instead, click the small arrow next to the **+** symbol at the top right of the panel and select **PowerShell**.
 
-| Tool                         | Purpose                                                                | Command                                                                                                                                            |
-|:-----------------------------|:-----------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------|
-| :octocat: **Git**            | Version control. Claude Code also uses the Git Bash that comes with it | `winget install --id Git.Git -e`                                                                                                                   |
-| :snake: **uv**               | Python package and version manager                                     | `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 \| iex"`                                                              |
-|                              | *Quit and reopen VS Code before continuing*                            |                                                                                                                                                    |
-| :snake: **Python 3.13**      | Runs Python                                                            | `uv python install 3.13`                                                                                                                           |
-| **nvm-windows + Node.js 24** | Frontend tooling and `npm`                                             | `winget install --id CoreyButler.NVMforWindows -e` <br> quit and reopen VS Code, then `nvm install 24` and `nvm use 24` (approve the admin prompt) |
-| **Claude Code**              | AI coding assistant in the terminal                                    | `irm https://claude.ai/install.ps1 \| iex`                                                                                                         |
-| :memo: **VS Code**           | Development environment                                                | [Download](https://code.visualstudio.com/download) (already done if you followed the README)                                                       |
+First, allow PowerShell to run scripts from your own computer, for your user only. `npm` and a Python project's `.venv` activation need this (the one-click setup does the same):
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+If PowerShell says the setting is overridden by a policy, your organization manages it: ask your IT team to allow `RemoteSigned`, and use `npm.cmd` instead of `npm` until then.
+
+| Tool                    | Purpose                                                                | Command                                                                                                                        |
+|:------------------------|:-----------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------|
+| :octocat: **Git**       | Version control. Claude Code also uses the Git Bash that comes with it | `winget install --id Git.Git -e` (if Windows asks for permission, click **Yes**)                                               |
+| :snake: **uv**          | Python package and version manager                                     | `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 \| iex"`                                          |
+|                         | *Quit and reopen VS Code before continuing*                            |                                                                                                                                |
+| :snake: **Python 3.13** | Runs Python                                                            | `uv python install 3.13`                                                                                                       |
+| **Node.js 24 or newer** | Frontend tooling and `npm`                                             | `winget install --id OpenJS.NodeJS.LTS -e` (click **Yes** if asked), then quit and reopen VS Code. Check with `node --version` |
+| **Claude Code**         | AI coding assistant in the terminal                                    | `irm https://claude.ai/install.ps1 \| iex`                                                                                     |
+| :memo: **VS Code**      | Development environment                                                | [Download](https://code.visualstudio.com/download) (already done if you followed the README)                                   |
 
 <details>
   <summary>Prefer Linux on Windows (WSL2)?</summary>
@@ -158,15 +166,14 @@ This is optional: the course runs natively on Windows. If you'd rather work on L
 
 Enter the following commands in VS Code's terminal (or a terminal opened with <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd>).
 
-| Tool                       | Purpose                                                    | Command                                                                                                                          |
-|:---------------------------|:-----------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
-| :octocat: **Git and curl** | Version control, and downloading installers                | `sudo apt update && sudo apt install -y git curl`                                                                                |
-| :snake: **uv**             | Python package and version manager                         | `curl -LsSf https://astral.sh/uv/install.sh \| sh` <br> `source $HOME/.local/bin/env`                                            |
-| :snake: **Python 3.13**    | Runs Python                                                | `uv python install 3.13`                                                                                                         |
-| **nvm + Node.js 24**       | Frontend tooling and `npm`                                 | `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh \| bash` <br> `source ~/.bashrc` <br> `nvm install 24` |
-| **Claude Code**            | AI coding assistant in the terminal                        | `curl -fsSL https://claude.ai/install.sh \| bash`                                                                                |
-| **Claude Code sandbox**    | Lets Claude Code's `/sandbox` isolate the commands it runs | `sudo apt install -y bubblewrap socat`                                                                                           |
-| :memo: **VS Code**         | Development environment                                    | [Download](https://code.visualstudio.com/download) the `.deb` package (already done if you followed the README)                  |
+| Tool                       | Purpose                                     | Command                                                                                                                          |
+|:---------------------------|:--------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| :octocat: **Git and curl** | Version control, and downloading installers | `sudo apt update && sudo apt install -y git curl`                                                                                |
+| :snake: **uv**             | Python package and version manager          | `curl -LsSf https://astral.sh/uv/install.sh \| sh` <br> `source $HOME/.local/bin/env`                                            |
+| :snake: **Python 3.13**    | Runs Python                                 | `uv python install 3.13`                                                                                                         |
+| **nvm + Node.js 24**       | Frontend tooling and `npm`                  | `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh \| bash` <br> `source ~/.bashrc` <br> `nvm install 24` |
+| **Claude Code**            | AI coding assistant in the terminal         | `curl -fsSL https://claude.ai/install.sh \| bash`                                                                                |
+| :memo: **VS Code**         | Development environment                     | [Download](https://code.visualstudio.com/download) the `.deb` package (already done if you followed the README)                  |
 
 </details>
 

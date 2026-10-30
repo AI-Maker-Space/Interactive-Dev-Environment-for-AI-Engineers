@@ -3,10 +3,8 @@
 #  AI Engineer setup: macOS, Linux and WSL2              (Windows: setup.ps1)
 #
 #  Checks every tool the course needs and installs or fixes only what's
-#  missing. Anything it installs goes into ~/ai-eng, except Claude Code (its
-#  installer always uses ~/.local/bin) and system packages: Git (Apple's
-#  developer tools on a Mac), and on Linux curl, bubblewrap and socat.
-#  Safe to run again at any time.
+#  missing. Anything it installs goes into ~/ai-eng (except Claude Code,
+#  whose installer always uses ~/.local/bin). Safe to run again at any time.
 #
 #  Nothing is added to your shell profile, so the tools are only there when
 #  you ask for them: load them into a terminal with
@@ -448,12 +446,6 @@ fi
 MANAGER=""
 if have volta; then MANAGER="Volta"; elif have fnm; then MANAGER="fnm"; fi
 NODE_NEW=0
-manager_hint() {
-  case "$MANAGER" in
-    Volta) hint "volta install node@$NODE_VERSION" ;;
-    fnm)   hint "fnm install $NODE_VERSION && fnm default $NODE_VERSION" ;;
-  esac
-}
 
 if [ -n "$MANAGER" ]; then
   info "nvm" "not used: your Node.js is managed by $MANAGER"
@@ -497,14 +489,13 @@ if have node; then
     if [ "$NODE_NEW" -eq 1 ]; then done_ "Node.js" "${v#v} installed"; else ok "Node.js" "${v#v}"; fi
   else
     warn "Node.js" "${v#v} is older than the course needs ($NODE_VERSION+)"
-    if [ -n "$MANAGER" ]; then manager_hint
-    elif [ "$CHECK" -eq 1 ]; then hint "$RERUN"
-    else hint "nvm alias default $NODE_VERSION, then $RESTART"; fi
+    case "$MANAGER" in
+      Volta) hint "volta install node@$NODE_VERSION" ;;
+      fnm)   hint "fnm install $NODE_VERSION && fnm default $NODE_VERSION" ;;
+      *)     if [ "$CHECK" -eq 1 ]; then hint "$RERUN"; else hint "nvm alias default $NODE_VERSION, then $RESTART"; fi ;;
+    esac
   fi
   if have npm; then ok "npm" "$(npm --version 2>/dev/null)"; else missing "npm" npm; fi
-elif [ -n "$MANAGER" ]; then
-  # Running the setup again won't help here: it leaves Volta/fnm in charge.
-  fail "Node.js" "not installed; your Node.js versions are managed by $MANAGER"; manager_hint
 elif [ "$CHECK" -eq 0 ] && [ "$NVM_LOADED" -eq 1 ]; then
   fail "Node.js" "$NODE_VERSION couldn't be installed"; hint "$LOGHINT"
 else
@@ -522,22 +513,6 @@ else
     done_ "Claude Code" "$(claude --version 2>/dev/null | awk '{print $1}') installed"
   else
     fail "Claude Code" "couldn't be installed"; hint "$LOGHINT"
-  fi
-fi
-
-# Linux and WSL2: Claude Code's /sandbox needs bubblewrap and socat.
-if [ "$OS" = Linux ]; then
-  if have bwrap && have socat; then
-    ok "Claude sandbox" "bubblewrap and socat present"
-  elif [ "$CHECK" -eq 1 ]; then
-    warn "Claude sandbox" "bubblewrap or socat missing, so /sandbox won't work"; hint "$RERUN"
-  else
-    say "installing bubblewrap and socat for Claude Code's /sandbox"
-    if install_packages bubblewrap socat && have bwrap && have socat; then
-      done_ "Claude sandbox" "bubblewrap and socat installed"
-    else
-      warn "Claude sandbox" "bubblewrap/socat couldn't be installed, so /sandbox won't work"; hint "$LOGHINT"
-    fi
   fi
 fi
 

@@ -39,7 +39,7 @@ Note: If you prefer Cursor, Codex, or another tool, then you'll be on your own i
 There are two installation options:
 
 1. **One-click install** — follow the guided setup below. This is the recommended path for most users.
-2. **Step-by-step DIY install** — if you prefer to install and verify each tool manually, follow the [step-by-step setup guide](details/STEP_BY_STEP.md).
+2. **Step-by-step DIY install** — if you prefer to install and verify each tool manually, follow the [step-by-step setup guide](details/README.md).
 
 You will be using only one application throughout the entire setup and AI Makerspace courses – **VS Code**. First, install VS Code as you would any other application. Once installed, all future commands will be entered into the terminal *within* VS Code; therefore, the process will be identical on both Macs and Windows. It should take approximately 15 minutes to complete the installation (a Mac that still needs Apple's developer tools can take 5–15 minutes longer).
 
@@ -94,15 +94,17 @@ The setup script will go through each tool used in this course one by one. For e
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Git                      | Saves versions of your work and communicates with GitHub. On a Mac, it comes with Apple's developer tools                                                        |
 | uv and Python            | Runs Python and installs each project's packages. Any version of Python from 3.12 to 3.14 that you currently have is acceptable; otherwise, it will install 3.13 |
-| nvm and Node.js 24       | Runs JavaScript tools and web front ends                                                                                                                         |
+| Node.js 24               | Runs JavaScript tools and web front ends. On Mac/Linux it comes through nvm; on Windows, the setup downloads a portable copy into `ai-eng\node`                  |
 | Claude Code              | Your AI coding assistant in the terminal                                                                                                                         |
-| bubblewrap and socat     | Linux only: let Claude Code's `/sandbox` isolate the commands it runs                                                                                            |
 | VS Code's `code` command | Opens a directory in VS Code from the terminal                                                                                                                   |
 
-The tools the setup script installs go into a directory named **`ai-eng`** in your home directory, so they aren't scattered across your computer. There are a few exceptions: Claude Code's own installer always uses `~/.local/bin`, and anything that comes from your system's installer stays where the system puts it (Git through Apple's developer tools on a Mac or the package manager on Linux, and bubblewrap and socat on Linux). Tools you already have installed will not be installed again.
+The tools the setup script installs go into a directory named **`ai-eng`** in your home directory, so they aren't scattered across your computer. There are a few exceptions: Claude Code's own installer always uses `~/.local/bin`, and anything that comes from your system's installer stays where the system puts it (Git through the Git for Windows installer, Apple's developer tools on a Mac, or the package manager on Linux). Tools you already have installed will not be installed again.
+
+On Windows, the setup also lets PowerShell run scripts from your own computer (the `RemoteSigned` policy, for your user only). `npm`, `env.ps1` and a Python project's `.venv` activation all need this.
 
 During the setup process, you may be asked several questions:
 
+* **Windows:** If Git isn't installed yet, Windows asks for permission to install it: click **Yes**.
 * **Mac:** If Git isn't installed yet, a window asks to install Apple's developer tools: click **Install**, then **Agree**. The setup waits while it finishes (5–15 minutes).
 * **Mac:** Do you want Homebrew? This is optional: press **Enter** to skip.
 * **Linux:** Your computer password to install system packages. It won't show as you type.
