@@ -1,0 +1,241 @@
+# Runs the real setup scripts on GitHub-hosted macOS, Linux and Windows machines,
+# twice each (the second run proves "safe to run again"), then:
+#   - runs --check / -Check (read-only),
+#   - loads env.sh / env.ps1 in a new shell and uses the tools, as a student would,
+#   - reports any shell-profile or PATH change other than VS Code's 'code' command.
+#
+# Limits worth knowing:
+#  - Runners come with Git, Python and Node preinstalled, so most jobs exercise
+#    the "keep what's there" paths. The "bare Mac" job hides the runner's own
+#    Python and Node, so the setup has to install Python 3.13 and Node 22 itself.
+#  - Runners don't have VS Code; the scripts report that as info on CI.
+#  - The Git identity and GitHub SSH steps need a human, so they're skipped
+#    (--tools-only / -ToolsOnly).
+#  - GitHub sets CI=true, so the scripts take default answers and never wait
+#    for input. --yes / -Yes says so explicitly as well.
+
+name: Test setup scripts
+
+on:
+  push:
+    paths:
+      - setup.sh
+      - setup.ps1
+      - .github/workflows/test-setup.yml
+  pull_request:
+    paths:
+      - setup.sh
+      - setup.ps1
+      - .github/workflows/test-setup.yml
+  schedule:
+    - cron: "0 6 * * 1"   # Mondays: catches upstream changes (uv, nvm, Claude Code, winget IDs)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: ShellCheck
+        run: shellcheck setup.sh
+      - name: PowerShell script parses, stays ASCII-only, and passes PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $failed = $false
+          $errors = $null; $tokens = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path setup.ps1), [ref]$tokens, [ref]$errors)
+          foreach ($e in $errors) { Write-Host "::error file=setup.ps1,line=$($e.Extent.StartLineNumber)::$($e.Message)"; $failed = $true }
+          # Windows PowerShell 5.1 misreads non-ASCII characters in files without a BOM.
+          $n = 0
+          foreach ($line in Get-Content setup.ps1) {
+            $n++
+            if ($line -match '[^\x00-\x7F]') { Write-Host "::error file=setup.ps1,line=$n::Non-ASCII character"; $failed = $true }
+          }
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+          $issues = Invoke-ScriptAnalyzer -Path setup.ps1 -Severity Error
+          foreach ($i in $issues) { Write-Host "::error file=setup.ps1,line=$($i.Line)::$($i.Message)"; $failed = $true }
+          if ($failed) { exit 1 }
+
+  mac-linux:
+    name: ${{ matrix.label }}
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: macOS
+            os: macos-latest        # Apple Silicon
+            login_shell: zsh        # what students get on a Mac
+            bare: false
+          - label: macOS, no Python or Node
+            os: macos-latest
+            login_shell: zsh
+            bare: true
+          - label: Ubuntu 24.04
+            os: ubuntu-24.04
+            login_shell: bash
+            bare: false
+          - label: Ubuntu 26.04
+            os: ubuntu-26.04
+            login_shell: bash
+            bare: false
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    env:
+      SHELL: /bin/${{ matrix.login_shell }}
+      INSTALL_HOMEBREW: "no"
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Snapshot shell profiles
+        run: |
+          mkdir -p "$RUNNER_TEMP/profiles-before"
+          for f in .zshrc .zprofile .bashrc .bash_profile .profile; do
+            cp "$HOME/$f" "$RUNNER_TEMP/profiles-before/$f" 2>/dev/null || : >"$RUNNER_TEMP/profiles-before/$f"
+          done
+
+      # Moves every Python 3.12+ and Node the runner has out of the way (it's a
+      # throwaway machine), so the setup must install its own. macOS's built-in
+      # /usr/bin/python3 (3.9) stays, as on a student's Mac; it's too old to count.
+      - name: Hide the runner's own Python and Node
+        if: matrix.bare
+        run: |
+          hide() {
+            local name="$1" p
+            while p="$(command -v "$name")" && [ "${p#/usr/bin/}" = "$p" ]; do
+              sudo mv "$p" "$p.hidden-by-ci" || return 1
+              hash -r
+            done
+          }
+          for n in node npm npx corepack python python3 python3.12 python3.13 python3.14 pip pip3; do hide "$n"; done
+          echo "node:    $(command -v node || echo 'none (as intended)')"
+          echo "python3: $(command -v python3) $(python3 --version 2>&1)"
+
+      - name: Setup, first run
+        run: bash ./setup.sh --yes --tools-only < /dev/null
+
+      - name: Setup, second run (must be safe to repeat)
+        run: bash ./setup.sh --yes --tools-only < /dev/null
+
+      - name: Check (read-only)
+        run: bash ./setup.sh --check --tools-only
+
+      - name: The setup installed Python 3.13 and Node 22 itself
+        if: matrix.bare
+        run: |
+          report="$HOME/ai-eng/setup-report.txt"
+          if ! grep -E '^\[ OK \] Python +3\.13\.' "$report" || ! grep -E '^\[ OK \] Node\.js +22\.' "$report"; then
+            echo "::error::Expected Python 3.13 and Node 22 from the setup. Report:"; cat "$report"; exit 1
+          fi
+
+      # What a student does in each new terminal: load the tools, then use them.
+      - name: Tools work after loading env.sh in a new ${{ matrix.login_shell }} session
+        run: ${{ matrix.login_shell }} -c 'source ~/ai-eng/env.sh && uv --version && uv python find ">=3.12,<3.15" && node --version && npm --version && claude --version'
+
+      # The setup only ever adds VS Code's 'code' line to a profile. Anything else
+      # came from an installer (e.g. Claude Code's) and is worth knowing about.
+      - name: Shell profile changes (only the 'code' line is expected)
+        run: |
+          changed=0
+          for f in .zshrc .zprofile .bashrc .bash_profile .profile; do
+            [ -f "$HOME/$f" ] || continue
+            added="$(diff "$RUNNER_TEMP/profiles-before/$f" "$HOME/$f" | sed -n 's/^> //p' | grep -v '^[[:space:]]*$' || true)"
+            [ -n "$added" ] || continue
+            changed=1
+            echo "$f gained:"
+            while IFS= read -r line; do echo "    $line"; done <<<"$added"
+            unexpected="$(echo "$added" | grep -vF "# AI Engineer setup: VS Code 'code' command" || true)"
+            if [ -n "$unexpected" ]; then
+              echo "::warning title=Unexpected change to $f::Lines the setup didn't write (probably an installer): $(echo "$unexpected" | tr '\n' ' ')"
+            fi
+          done
+          [ "$changed" -eq 1 ] || echo "No shell profile changed."
+
+      - name: Collect report
+        if: always()
+        run: mkdir -p report && cp ~/ai-eng/setup-report.txt ~/ai-eng/setup.log report/ 2>/dev/null || true
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: report-${{ matrix.os }}${{ matrix.bare && '-bare' || '' }}
+          path: report/
+          if-no-files-found: ignore
+
+  windows:
+    name: Windows
+    needs: lint
+    runs-on: windows-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: powershell   # Windows PowerShell 5.1, the default terminal in VS Code on Windows
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Snapshot user PATH
+        run: |
+          $p = [Environment]::GetEnvironmentVariable('Path', 'User')
+          if (-not $p) { $p = '' }
+          Set-Content -LiteralPath "$env:RUNNER_TEMP\user-path-before.txt" -Value $p
+
+      - name: Setup, first run
+        run: |
+          powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .\setup.ps1 -Yes -ToolsOnly
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+
+      - name: Setup, second run (must be safe to repeat)
+        run: |
+          powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .\setup.ps1 -Yes -ToolsOnly
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+
+      - name: Check (read-only)
+        run: |
+          powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .\setup.ps1 -Check -ToolsOnly
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+
+      # What a student does in each new terminal: load the tools, then use them.
+      - name: Tools work after loading env.ps1
+        run: |
+          . "$HOME\ai-eng\env.ps1"
+          foreach ($c in 'uv', 'node', 'npm.cmd', 'claude') {
+            & $c --version
+            if ($LASTEXITCODE) { Write-Host "::error::$c doesn't work after loading env.ps1"; exit 1 }
+          }
+          uv python find '>=3.12,<3.15'
+          if ($LASTEXITCODE) { exit 1 }
+
+      # The setup only ever adds VS Code's folder to the user PATH. Anything else
+      # came from an installer (e.g. Claude Code's) and is worth knowing about.
+      - name: User PATH changes (only VS Code's folder is expected)
+        run: |
+          $before = @((Get-Content -LiteralPath "$env:RUNNER_TEMP\user-path-before.txt" -Raw) -split ';' | Where-Object { $_.Trim() })
+          $now = [Environment]::GetEnvironmentVariable('Path', 'User')
+          if (-not $now) { $now = '' }
+          $added = @($now -split ';' | Where-Object { $_.Trim() -and ($before -notcontains $_) })
+          if ($added.Count -eq 0) { 'User PATH unchanged.' } else { 'User PATH gained:'; $added | ForEach-Object { "    $_" } }
+          foreach ($a in $added) {
+            if ($a -notlike '*Microsoft VS Code\bin*') {
+              Write-Host "::warning title=Unexpected user PATH change::$a (probably an installer, not the setup)"
+            }
+          }
+          exit 0
+
+      - name: Collect report
+        if: always()
+        run: |
+          New-Item -ItemType Directory -Force report | Out-Null
+          Copy-Item "$HOME\ai-eng\setup-report.txt", "$HOME\ai-eng\setup.log" report\ -ErrorAction SilentlyContinue
+          exit 0
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: report-windows
+          path: report/
+          if-no-files-found: ignore

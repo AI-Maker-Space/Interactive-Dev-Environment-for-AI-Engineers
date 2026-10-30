@@ -1,26 +1,29 @@
-<p align = "center" draggable=”false” ><img src="https://github.com/AI-Maker-Space/LLM-Dev-101/assets/37101144/d1343317-fa2f-41e1-8af1-1dbb18399719" 
+<p align = "center" draggable="false" ><img src="https://github.com/AI-Maker-Space/LLM-Dev-101/assets/37101144/d1343317-fa2f-41e1-8af1-1dbb18399719" 
      width="200px"
-     height="auto"/>
+     height="auto" alt=""/>
 </p>
 
 
 ## <h1 align="center" id="heading">:wave: Interactive Dev Environment (IDE) for AI Engineers </h1>
 
 <p align="center">
-  <img src="images/ai_engineer_at_workstation.jpg" alt="AI Engineer Setting Up Dev Env" width="300" />
+  <img src="images/ai_engineer_at_workstation.jpg" alt="AI Engineer Setting Up Dev Env" width="350" />
 </p>
 
 ### <h3 align="center"> Getting Started 🏗️ Building, 🚢 Shipping, and 🚀 Sharing Production LLM Applications!!
 
 🛣️ Welcome to the beginning of your journey to become an AI Engineer! 
 
-This tutorial is designed to guide you through the process of setting up your Interactive Development Environment (IDE) to align with best-practices at [The LLM Edge](https://newsletter.aimakerspace.io/)!
+This environment setup prepares your machine for course projects such as The AI Engineer Challenge. That challenge expects:
 
-### 🤖 AI Editors Supported 
-* [Visual Studio Code](https://github.com/microsoft/vscode)
-* [Claude Code](https://claude.com/download)
+- Python compatible with `>=3.12,<3.15`; the challenge currently pins Python `3.13`
+- `uv` for Python version, virtual environment, and dependency management
+- Git and GitHub authentication for forking, cloning, committing, and pushing
+- Node.js 24 and `npm` for frontend tooling and Vercel deployment
+- OpenAI or Anthropic API keys, stored in each project’s `.env` file
+- [Visual Studio Code](https://github.com/microsoft/vscode) and/or [Claude Code](https://claude.com/download) from any console, as the officially supported development tools
 
-Note: If you prefer Cursor, Codex, or another tool, then you'll be on your own in terms of debugging.
+Note: If you prefer Cursor, Codex, or another tool, then you'll be on your own in terms of debugging, but they can use the same base setup.
 
 
 ### 🖥️ Operating Systems Supported
@@ -31,358 +34,145 @@ Note: If you prefer Cursor, Codex, or another tool, then you'll be on your own i
 
 <p></p>
 
-## :hammer_and_wrench: Basic Concepts and Code
+## How To Get Started
 
-We will be using a few core tools in our stack such as a `terminal`, `Command Line Interface (CLI)`, `git`, `uv`, and `pip`.
-<details>
-<summary>Terminal and Command Line Interface </summary>
+There are two installation options:
 
-We must use both terminal and a Command Line Interface (CLI) to develop AI applications with open-source tools. This is true regardless of our operating system.
+1. **One-click install** — follow the guided setup below. This is the recommended path for most users.
+2. **Step-by-step DIY install** — if you prefer to install and verify each tool manually, follow the [step-by-step setup guide](details/STEP_BY_STEP.md).
 
-A terminal is a software application like macOS Terminal or Windows Terminal that gives you a window where you type text-based commands and receive text-based output.
+You will be using only one application throughout the entire setup and AI Makerspace courses – **VS Code**. First, install VS Code as you would any other application. Once installed, all future commands will be entered into the terminal *within* VS Code; therefore, the process will be identical on both Macs and Windows. It should take approximately 15 minutes to complete the installation (a Mac that still needs Apple's developer tools can take 5–15 minutes longer).
 
-A Command Line Interace (CLI) refers to the environment or shell (e.g., Bash, Zsh, PowerShell, etc.) that interprets your text commands. The CLI is the program that actually runs commands and processes input/output; it just happens to run inside a terminal application (or emulator).
+At any point during the course, you can re-run the **One-click install** setup; however, anything that has already been completed will be skipped.
 
-Here is a quick review of some terminal commands that you  should make sure you know! It's important to understand both syntax and what they do! 
+## 1. Install VS Code
 
-| Command      | Stands For |  Description |
-| ----------- | ----------- | -------------|
-| `ls`      | long listing       | lists all files and directories in the present working directory |
-| `ls -a`  | long listing all   |  lists hidden files as well |
-| `cd {dirname}`      | change directory       | to change to a particular directory |
-| `cd ~`   | change directory home        | navigate to HOME directory |
-| `cd ..`      | change directory up       | move one level up |
-| `cat {filename}`   | concatenate        | displays the file content |
-| `sudo`      | superuser       | allows regular users to run programs with the security privileges of the superuser or root |
-| `mv {filename} {newfilename}`   | move        | renames the file to new filename |
-| `clear`      | clear       | clears the terminal screen |
-| `mkdir {dirname}`   | make directory        | create new directory in present working directory or at specified path |
-| `rm {filename}`   | remove        | remove file with given filename |
-| `touch {filename}.{ext}`   | touch        | create new empty file |
-| `rmdir {dirname}`   | remove directory        | deletes a directory |
-| `ssh {username}@{ip-address} or {hostname}`   | secure shell        | login into a remote Linux machine using SSH |
+Download VS Code from **[code.visualstudio.com/download](https://code.visualstudio.com/download)**.
 
-</details>
+### Mac
+1. Open the downloaded file. You will now have **Visual Studio Code**.
+2. Move **Visual Studio Code** into your **Applications** folder. This is important: if you run VS Code from your Downloads folder, you will not receive updates and the `code` command will not function correctly.
+3. Open VS Code from your Applications folder. If macOS asks you if you wish to open an application downloaded from the internet, select **Open**.
 
-<details>
-<summary>Git</summary>
+### Windows
+1. Run the installer and accept all default settings. Ensure that the option to **Add to PATH** remains checked (it is checked by default).
+2. On the final screen, leave the option to **Launch Visual Studio Code** checked and click **Finish**.
 
-Git is a free and open source distributed version control system designed to handle everything from small to very large projects. These are the commands we will be using with `git`:
+### Linux:
+Use either the `.deb` (Ubuntu, Debian) or `.rpm` (Fedora) download options.
 
-`git clone` -> clone a remote repository to your local computer
+## 2. Open Terminal Within VS Code
 
-`git add` -> add files to a commit
+In the top menu bar, select **Terminal → New Terminal**. A panel will appear at the bottom of the window.
 
-`git commit -m {message}` -> commit changes with a message
+To determine which command to use in the following step, examine the beginning of the line in that panel:
 
-`git push` -> push commit to remote repository
-</details>
+| If you see...                                            | You are on... | Use...                    |
+|----------------------------------------------------------|---------------|---------------------------|
+| A line beginning with `PS`, such as `PS C:\Users\ana>`   | Windows       | The **Windows** command   |
+| A line ending with `%` or `$`, such as `ana@MacBook ~ %` | Mac/Linux     | The **Mac/Linux** command |
 
-<details>
-<summary>uv</summary>
+> **Windows:** If the panel displays `bash` instead of `PS`, click the small arrow next to the **+** symbol at the top right of the panel and select **PowerShell**.
 
-uv is an extremely fast Python package manager and virtual environment management tool, written in Rust. uv aims to be a drop-in replacement for pip and pip-tools, providing significantly improved performance. We will use `uv` to manage both our package installations and virtual environments.
+## 3. Run Setup
 
-Some common `uv` commands:
+Copy the appropriate command for your operating system and paste it into the terminal (**Cmd+V** on Mac, **Ctrl+V** on Windows). Press **Enter**.
 
-`uv init` -> Initializes a new Python project and generates a `pyproject.toml`.
-
-`uv add <package-name>` -> Adds a package dependency to `pyproject.toml`.
-
-`uv run python your_script.py` -> Runs a Python script inside the project environment without requiring manual activation.
-
-Note: In most AIM repositories, the required dependencies are already defined in `pyproject.toml`, so you typically will not need to run `uv init` or `uv add` unless you are modifying or extending the project.
-
-Optional: 
-
-`uv venv .venv -p 3.11` -> Creates a virtual environment in `.venv` using Python 3.11.
-
-`source .venv/bin/activate` -> Activates the virtual environment for your current shell session. This is optional if you use `uv run`.
-
-</details>
-
-<p></p>
-
-## :rocket: Let's Get Started! 
-Let's start off by setting up our environment!  Review the environment setup instructions for the local environment that you'll be using in this course.
-<details>
-  <summary>Windows</summary>
-
-
-* Install [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install) using Powershell
-
-```powershell
-wsl --install
+### Mac/Linux
+```bash
+mkdir -p ~/ai-eng && curl -fsSL https://raw.githubusercontent.com/AI-Maker-Space/Interactive-Dev-Environment-for-AI-Engineers/main/setup.sh -o ~/ai-eng/setup.sh && bash ~/ai-eng/setup.sh
 ```
-* Install [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab) (You can even make it your [default!](https://devblogs.microsoft.com/commandline/
-windows-terminal-as-your-default-command-line-experience/))
 
-* Install [Ubuntu](https://www.microsoft.com/en-us/p/ubuntu/9pdxgncfsczv?activetab=pivot:overviewtab)
+### Windows
+```powershell
+mkdir -Force $HOME\ai-eng | Out-Null; irm https://raw.githubusercontent.com/AI-Maker-Space/Interactive-Dev-Environment-for-AI-Engineers/main/setup.ps1 -OutFile $HOME\ai-eng\setup.ps1; powershell -ExecutionPolicy Bypass -File $HOME\ai-eng\setup.ps1
+```
 
-* Make sure you've install the correct version with the command `wsl -l -v`
-    
-(If you find yourself getting stuck on the WSL2 install, [here](https://www.youtube.com/watch?v=VMZH9Pj2dXw&ab_channel=StefanRows) is a link to video instructions)
+The setup script will go through each tool used in this course one by one. For each tool, it will check if you already have it installed and will only install or fix it if necessary:
 
-Give it a test drive! 
+| Tool                     | Purpose                                                                                                                                                          |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Git                      | Saves versions of your work and communicates with GitHub. On a Mac, it comes with Apple's developer tools                                                        |
+| uv and Python            | Runs Python and installs each project's packages. Any version of Python from 3.12 to 3.14 that you currently have is acceptable; otherwise, it will install 3.13 |
+| nvm and Node.js 24       | Runs JavaScript tools and web front ends                                                                                                                         |
+| Claude Code              | Your AI coding assistant in the terminal                                                                                                                         |
+| bubblewrap and socat     | Linux only: let Claude Code's `/sandbox` isolate the commands it runs                                                                                            |
+| VS Code's `code` command | Opens a directory in VS Code from the terminal                                                                                                                   |
 
-![WindowsTerminal](https://user-images.githubusercontent.com/72572922/160048214-37f08855-8b29-4c13-9d25-e0f69806f752.jpg)
+The tools the setup script installs go into a directory named **`ai-eng`** in your home directory, so they aren't scattered across your computer. There are a few exceptions: Claude Code's own installer always uses `~/.local/bin`, and anything that comes from your system's installer stays where the system puts it (Git through Apple's developer tools on a Mac or the package manager on Linux, and bubblewrap and socat on Linux). Tools you already have installed will not be installed again.
 
-Continue by installing the following tools using [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab) to setup your environment.
+During the setup process, you may be asked several questions:
 
-| Tool | Purpose | Command                                                                                           |
-| :-------- | :-------- | :------------------------------------------------------------------------------------------------ |
-| :snake: **uv** (installed in WSL2) | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh | sh` <br> `source ~/.bashrc` |
-| :octocat: **Git** (installed in WSL2) | Version Control | `sudo apt update && sudo apt upgrade` <br> `sudo apt install git-all`   |
-| :memo: **VS Code** (installed in Windows) | Development Environment | [Download](https://code.visualstudio.com/download) |
-| :memo: **Cursor** | Development Environment | [Download](https://www.cursor.com/downloads) |
+* **Mac:** If Git isn't installed yet, a window asks to install Apple's developer tools: click **Install**, then **Agree**. The setup waits while it finishes (5–15 minutes).
+* **Mac:** Do you want Homebrew? This is optional: press **Enter** to skip.
+* **Linux:** Your computer password to install system packages. It won't show as you type.
+* **Everyone:** What is your name and email address for Git?
+* **Everyone:** Would you like to add your computer's key to GitHub? The setup script will copy the key and open the correct GitHub page for you.
 
-</details>
+Each line of output produced by the setup script will indicate one of the following:
 
-<details>
-  <summary>Linux (Debian/Ubuntu)</summary>
+| Output   | Indication                                                                                                 |
+|----------|------------------------------------------------------------------------------------------------------------|
+| `[ OK ]` | Tool is already installed and working; no action needed                                                    |
+| `[DONE]` | Tool was just installed or fixed                                                                           |
+| `[ -- ]` | Tool is optional and was skipped; this is acceptable                                                       |
+| `[WARN]` | Tool is installed and working; however, there is an issue worth reviewing. Refer to the `->` hint below it |
+| `[FAIL]` | Tool requires fixing; refer to the `->` hint below it                                                      |
 
-Open terminal using <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>. Enter the following commands in terminal to setup your environment.
-| Tool | Purpose | Command                                                                                           |
-| :-------- | :-------- | :------------------------------------------------------------------------------------------------ |
-| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh | sh` <br> `source ~/.bashrc` |
-| :octocat: **Git**  | Version Control | `sudo apt update && sudo apt upgrade` <br> `sudo apt install git-all`   |
-| :memo: **VS Code** | Development Environment | [Download](https://code.visualstudio.com/download) |
-| :memo: **Cursor** | Development Environment | [Download](https://www.cursor.com/downloads) |
+## 4. Load Tools Into Your Terminal
 
-</details>
+The setup script does not automatically add the tools to every terminal. Instead, you load them when needed; once you close the terminal, they are unloaded again. This leaves your other terminals and projects exactly as they were. To load the tools into your terminal, execute the following command:
 
-<details>
-  <summary>macOS Intel</summary>
+### Mac/Linux
+```bash
+source ~/ai-eng/env.sh
+```
 
-To get started, we need to download the MacOS package manager, <strong>Homebrew</strong> :beer:, so that we can download the tools we'll be using in the course. If you don't already have Homebrew installed, run the following commands:
+### Windows
+```powershell
+. $HOME\ai-eng\env.ps1
+```
 
-1. Open terminal using <kbd>⌘</kbd>+<kbd>Space</kbd> and type `terminal`.
+Execute this command in **every new terminal** you use for coursework. If a command such as `uv`, `node` or `claude` results in an error message stating *not found*, then this step was skipped.
 
-2. Install Homebrew using the command below, following the command prompts:
+The only exception to this rule is VS Code's `code` command which opens a directory in VS Code. This is configured once and will work in every new terminal.
 
-    `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` 
+## 5. Verify Everything Works Correctly
 
-3. Update Homebrew (This may take a few minutes)
+To verify that everything is working correctly, run the setup script again using **check**. This will only verify that everything is correct and will not make any changes:
 
-    `git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core fetch --unshallow`
+### Mac/Linux
+```bash
+bash ~/ai-eng/setup.sh --check
+```
 
-    `git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask fetch`
-     
-4. Install the `wget` command to continue following along
-     `brew install wget`
+### Windows
+```powershell
+powershell -ExecutionPolicy Bypass -File $HOME\ai-eng\setup.ps1 -Check
+```
 
-Enter the following commands in terminal to setup your environment.
+Ideally, you want to see **All good**. If you see anything else:
 
-| Tool | Purpose | Command                                                                                           |
-| :-------- | :-------- | :------------------------------------------------------------------------------------------------ |
-| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh | sh` <br> `source ~/.bashrc` |
-| :octocat: **Git**  | Version Control | `brew install git`   |
-| :memo: **VS Code** | Development Environment | [Download](https://code.visualstudio.com/download) |
-| :memo: **Cursor** | Development Environment | [Download](https://www.cursor.com/downloads) |
+* **Most issues:** Run the setup script again without `--check`. It is safe to repeat this process: it will skip what has been completed and attempt what remains.
+* **A hint indicates to open a new terminal:** Select **Terminal → New Terminal**, then load the tools again (Step 4).
+* **Still experiencing issues?** the setup script will copy a report to your clipboard. Paste this report into the course help channel. Additionally, a copy of this report is saved in `ai-eng/setup-report.txt`, with complete details in `ai-eng/setup.log`.
 
-</details>
+## 6. Install the VS Code Python Extensions
 
-<details>
-  <summary>macOS Apple Silicon</summary><br>
+Course notebooks need two VS Code extensions, both published by Microsoft: **Python** and **Jupyter**. Click the **Extensions** tab on the left side of VS Code, search for each one, and click **Install**. Or run these in the terminal:
 
-To get started with uv on Apple Silicon, we'll install it directly with our terminal.
+```bash
+code --install-extension ms-python.python
+code --install-extension ms-toolsai.jupyter
+```
 
-Open terminal using <kbd>⌘</kbd>+<kbd>Space</kbd> and type `terminal`. Enter the following commands in terminal to setup your environment.
+## Using PyCharm Or Another JetBrains IDE Instead
 
-First, let's install Homebrew if you don't already have it installed:
+All aspects of this process are identical regardless of whether you use PyCharm or another JetBrains IDE since JetBrains IDEs also include a built-in terminal. Only Step 2 differs: open the terminal using **View → Tool Windows → Terminal** (or **Alt+F12**, **⌥F12** on Mac).
 
-1. Install Homebrew using the command below, following the command prompts:
+The setup script detects when it runs within a JetBrains IDE; therefore, it will not indicate that VS Code is missing.
 
-    `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` 
-
-2. Update Homebrew (This may take a few minutes)
-
-    `git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core fetch --unshallow`
-
-    `git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask fetch`
-     
-3. Install the `wget` command to continue following along
-     `brew install wget`
-
-4. Install the `xcode-select` command-line utilities by typing the following command in the terminal
-
-    `xcode-select --install`
-
-Now let's install uv and other tools:
-
-| Tool | Purpose | Command                                                                                           |
-| :-------- | :-------- | :------------------------------------------------------------------------------------------------ |
-| :snake: **uv**  | Python Package Manager | `curl -LsSf https://astral.sh/uv/install.sh | sh` |
-| :octocat: **Git**  | Version Control | `brew install git`   |
-| :memo: **VS Code** | Development Environment | [Download](https://code.visualstudio.com/download) |
-| :memo: **Cursor** | Development Environment | [Download](https://www.cursor.com/downloads) |
-
-</details>
-
-
-<p></p>
-
-
-## 🧑‍💻 Let's configure our VS Code environment!
-
-<details>
-  <summary>Install the Python and Jupyter Notebook Extensions</summary>
-
-  1. Click the `Extensions` <img src="https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/f17d8f45-f174-4b9b-be92-8f1e85d8a77b" width=30px/> tab on the left side of the window.
-
-  2. Type "Python" in the search bar.
-
-  3. Click `Install` <img src="https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/4c06f2a7-d7c3-4c59-b656-82170518cbeb" width=30px/>  on the <ins><strong>Python</strong></ins> extension
-
-  4. Then, type "Jupyter" in the search bar.
-
-  5. Click `Install` <img src="https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/4c06f2a7-d7c3-4c59-b656-82170518cbeb" width=30px/>  on the <ins><strong>Microsoft Jupyter Notebook Extension</strong></ins>
-
-</details>
-
-<details>
-  <summary>Set the Python Interpreter</summary>
-
-  1. Open Cursor (or VS Code) and click on `New File...`
-
-  3. Open the Command Pallette 
-    <strong>(Mac: </strong></ins> <kbd>Shift</kbd><kbd>⌘</kbd>+<kbd>P</kbd> 
-    ,<strong> Windows: </strong></ins> <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>)
-
-  4. Type "Python" in the search bar.
-
-  5. Click on `New Python File`
-
-  6. Open the Command Pallette again.  Can you remember the shortcut?  If    not, see #2 above again.
-
-  7. Type "Python Interpreter".
-
-  8. Click on `Python: Select Interpreter`
-
-  9. Select the Python environment that was created by uv.
-  
-  <p align = "center" draggable="false">
-  <img src="https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/d95ff119-2c97-4bf8-9133-1bf167f61f6e"> 
-  </p>
-
-  9. Now you're ready to start coding!
-
-</details>
-
-<p> </p>
-
-
-## 🔑 Setting Up Keys and Tokens
-
-<details>
-
-
-
-     
-  <summary>Generating a GitHub Access Token</summary>
-     
-**Create an account with GitHub [here](https://github.com/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F&source=header-home) if you do not have one.**
-
-Navigate to [GitHub's Developer Token settings](https://github.com/settings/tokens).
-Click on `Generate new token` > `Generate new token (classic)`
-![Screenshot 2023-08-30 at 8 16 58 PM](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/d6f57901-6e69-42e5-a22c-37b48ff6e3fc)
-
-Give the token a description, set the expiration (we recommend 90 days), and check every box. When you're done, click `Generate token` at the bottom of the page. 
-
-![Screenshot 2023-08-30 at 8 36 14 PM](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/451bad7b-ec8a-4429-a5bb-8d0212d00f50)
-
-Copy the access token and save it for later use. We will use this token to interact with GitHub. Please do not lose this access token or you will need to generate a new one.
-
-![image](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/f98c9644-e44b-4fd3-8590-db513bef6360)
-
-</details>
-
-
-<details>
-  <summary>Generating an OpenAI API key</summary>
-     
-**Create an account with OpenAI [here](https://platform.openai.com/signup) if you do not have one.**
-
-Navigate to [OpenAI's API Developer settings](https://platform.openai.com/account/api-keys) and click on `+ Create new secrete key`.
-![image](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/b6179d51-76ac-42a8-8304-39f8b5c9a8c8)
-
-Name your key and click `Create secret key`
-![image](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/be0ea05f-59d3-4d20-939d-b402e3d4bbb2)
-
-Copy the key and save it for later use. We will use this key several times in deploying projects. Please do not lose this key or you will need to generate a new one
-
-![image](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/cfaec5fa-5380-4aca-a6ae-6c14c8db6789)
-
-We recommend your run through our [OpenAI Notebook](https://colab.research.google.com/drive/16Y67VozkGVErtrF3WQArpM52AOk5pBGu?usp=sharing#scrollTo=3qCKaH6vD-jZ) to learn how to utilize the OpenAI API.
-</details>
-
-<details>
-  <summary>Generating a Claude API key</summary>
-
-**Create an account with Claude AI (anthropic.com) [here](htttps://console.anthropic.com) if you do not have one.**
-
-  Navigate to [Anthropic's Dashboard](https://console.anthropic.com/dashboard) and click on `Get API keys`
-  _NOTE: If you have not purchased credits yet, it will require you to purchase at least $5.00 worth before continuing._
-  ![Claude Actions](/images/claude_actions.png)
-
-  Enter a key name (or accept the default) and click on `Create API Key`
-  ![Claude Create API Key](/images/claude_create_api_key.png)
-
-  Click the `Copy` button and save the key somewhere that is secure. We will use this key several times in deploying projects. As stated in the modal, _Keep a record of your API key, you wont be able to view it again._
-
-![Claude Save API Key](/images/claude_save_api_key.png)
-
-  If you want to test the api key first, copy the example code and paste it into a terminal. The results will look something like this:
-  ![Claude API Key Test Results](/images/claude_api_key_test_results.png)
-
-</details>
-
-## <img src="https://octodex.github.com/images/original.png" width=40px/> Let's Make Sure That GitHub is Ready to Roll!
-
-<details>
-  <summary>Github SSH Setup</summary>
-  Secure Shell Protocol (SSH) provides a secure communication channel of an unsecured network.  Let's set it up!
-  
-  <p></p>
-
-  1. Generate a Private/Public SSH Key Pair.
-    
-  ```console
-  ssh-keygen -o -t rsa -C "your email address for github"
-  ```
-
-  2. Save file pair.  Default location `~/.ssh/id_rsa` is fine! 
-  
-
-  3. At the prompt, type in a secure passphrase.
-  4. Copy the contents of the public key that we will share with GitHub. 
-
-     * Mac: `pbcopy < ~/.ssh/id_rsa.pub` 
-
-     * Windows (WSL): `clip.exe < ~/.ssh/id_rsa.pub`
-
-     * Linux: `xclip -sel c < ~/.ssh/id_rsa.pub`
-  
-  5. Go to your GitHub account and go to `Settings`. 
-  
-  6. Under `Access`, click on the `SSH and GPG keys` tab on the left.
-
-  ![image](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/5fb54f16-7279-49c4-bda3-2da36cbbc306)
-
-
-  7. Click on the `New SSH Key` button.
-  
-  ![image](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/d5551c28-9d70-438c-b45d-43698384e3ff)
-
-  
-  8. Name the key, and paste the public key that you copied. Click the `Add SSH Key` button
-  
-
-  ![image](https://github.com/AI-Maker-Space/LLMOps-Dev-101/assets/37101144/8f7c4496-0e88-4058-9baf-73495322db8b)
-
-
-</details>
-
+All later guides provided in this course illustrate screens from VS Code. JetBrains IDEs have their own equivalents for notebooks and Claude Code.
 
 ## Build Your First LLM Application
 
