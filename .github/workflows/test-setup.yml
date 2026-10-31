@@ -7,7 +7,7 @@
 # Limits worth knowing:
 #  - Runners come with Git, Python and Node preinstalled, so most jobs exercise
 #    the "keep what's there" paths. The "bare Mac" job hides the runner's own
-#    Python and Node, so the setup has to install Python 3.13 and Node 22 itself.
+#    Python and Node, so the setup has to install Python 3.13 and Node 24 itself.
 #  - Runners don't have VS Code; the scripts report that as info on CI.
 #  - The Git identity and GitHub SSH steps need a human, so they're skipped
 #    (--tools-only / -ToolsOnly).
@@ -123,12 +123,12 @@ jobs:
       - name: Check (read-only)
         run: bash ./setup.sh --check --tools-only
 
-      - name: The setup installed Python 3.13 and Node 22 itself
+      - name: The setup installed Python 3.13 and Node 24 itself
         if: matrix.bare
         run: |
           report="$HOME/ai-eng/setup-report.txt"
-          if ! grep -E '^\[ OK \] Python +3\.13\.' "$report" || ! grep -E '^\[ OK \] Node\.js +22\.' "$report"; then
-            echo "::error::Expected Python 3.13 and Node 22 from the setup. Report:"; cat "$report"; exit 1
+          if ! grep -E '^\[ OK \] Python +3\.13\.' "$report" || ! grep -E '^\[ OK \] Node\.js +24\.' "$report"; then
+            echo "::error::Expected Python 3.13 and Node 24 from the setup. Report:"; cat "$report"; exit 1
           fi
 
       # What a student does in each new terminal: load the tools, then use them.
